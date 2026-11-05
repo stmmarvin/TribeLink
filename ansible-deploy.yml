@@ -1,0 +1,151 @@
+---
+- name: Deploy TribeLink
+  hosts: all
+  become: yes
+  vars_files: [vaulted_vars.yml]
+
+  tasks:
+  - name: Update the system
+    ansible.builtin.apt:
+      update_cache: yes
+      upgrade: dist
+
+  - name: Check if a reboot is required
+    ansible.builtin.stat:
+      path: /var/run/reboot-required
+      get_checksum: no
+    register: reboot_required_file
+
+  - name: Reboot the server (if required)
+    ansible.builtin.reboot:
+    when: reboot_required_file.stat.exists == true
+
+  - name: Remove dependencies that are no longer required
+    ansible.builtin.apt:
+      autoremove: yes
+
+  - name: Ensure acl, pwgen, nginx, php-fpm, php-xml, php-mysql, mariadb-server, composer, npm, vite and certbot are installed
+    ansible.builtin.apt:
+      pkg:
+      - acl
+      - pwgen
+      - nginx
+      - php-fpm
+      - php-xml
+      - php-mysql
+      - mariadb-server
+      - composer
+      - npm
+      - python3-certbot
+      - python3-certbot-nginx
+
+  - name: Install Vite and Vite+
+    become: yes
+    ansible.builtin.command:
+      cmd: 'npm i -g vite vite-plus'
+
+  - name: Request TLS Certificate using certbot
+    become: yes
+    ansible.builtin.command:
+      cmd: 'certbot certonly --nginx -d tribelink.sytes.net -m goal-stony-ranged@duck.com --agree-tos'
+      creates: '/etc/letsencrypt/live/tribelink.sytes.net/privkey.pem'
+
+  - name: Set correct owner for '/var/www' directory
+    become: yes
+    ansible.builtin.command:
+      cmd: 'chown www-data:www-data /var/www'
+
+  - name: Clone the repository 'main' branch to '/var/www/tribelink'
+    become: yes
+    become_user: www-data
+    ansible.builtin.git:
+      repo: 'https://HU-HBO-ICT@dev.azure.com/HU-HBO-ICT/2026-OpenICT-Sept-Project3-ScrumGPT/_git/2026-OpenICT-Sept-Project3-ScrumGPT'
+      dest: '/var/www/tribelink'
+      version: dev
+      force: yes
+      update: yes
+    environment:
+      GIT_CONFIG_COUNT: "1"
+      GIT_CONFIG_KEY_0: http.extraHeader
+      GIT_CONFIG_VALUE_0: >-
+        Authorization: Basic {{ (':' ~ git_repo_key) | b64encode }}
+
+  - name: Composer install
+    become: yes
+    become_user: www-data
+    ansible.builtin.command:
+      chdir: '/var/www/tribelink'
+      cmd: 'composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev'
+
+  - name: Setup .env
+    become: yes
+    become_user: www-data
+    ansible.builtin.shell:
+      chdir: '/var/www/tribelink'
+      cmd: 'sed "s/DB_PASSWORD=/DB_PASSWORD=$(pwgen 24 -n1)/" .env.prod > .env && php artisan key:generate'
+      creates: .env
+
+  - name: 'MariaDB: setup user and database'
+    become: yes
+    ansible.builtin.shell:
+      chdir: '/var/www/tribelink'
+      cmd: source <(grep DB_PASSWORD .env); mariadb -e "CREATE USER IF NOT EXISTS tribelink@localhost IDENTIFIED BY '$DB_PASSWORD'; CREATE DATABASE IF NOT EXISTS tribelink CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci; GRANT ALL PRIVILEGES ON tribelink.* to tribelink@localhost;"
+      executable: /bin/bash
+
+  - name: 'Laravel: clean up previously compiled files'
+    become: yes
+    become_user: www-data
+    ansible.builtin.command:
+      chdir: '/var/www/tribelink'
+      cmd: 'php artisan clear-compiled'
+
+  - name: 'Laravel: artisan optimize'
+    become: yes
+    become_user: www-data
+    ansible.builtin.command:
+      chdir: '/var/www/tribelink'
+      cmd: 'php artisan optimize'
+
+  - name: NPM install
+    become: yes
+    become_user: www-data
+    ansible.builtin.command:
+      chdir: '/var/www/tribelink'
+      cmd: 'npm ci --prefer-offline --omit=dev'
+
+  - name: NPM build
+    become: yes
+    become_user: www-data
+    ansible.builtin.shell:
+      chdir: '/var/www/tribelink'
+      cmd: 'vp install && npm run build'
+
+  - name: gzip-compress assets for better performance
+    become: yes
+    become_user: www-data
+    ansible.builtin.command:
+      chdir: '/var/www/tribelink'
+      cmd: 'gzip -rk --best public/build/assets'
+
+  - name: Run database migrations
+    become: yes
+    become_user: www-data
+    ansible.builtin.command:
+      chdir: '/var/www/tribelink'
+      cmd: 'php artisan migrate -n --force'
+
+  - name: Deploy the 'nginx-tribelink-webserver.conf' file
+    become: yes
+    ansible.builtin.shell:
+      chdir: '/var/www/tribelink'
+      cmd: 'cp nginx-tribelink-webserver.conf /etc/nginx/sites-available/nginx-tribelink-webserver.conf && chown root:root /etc/nginx/sites-available/nginx-tribelink-webserver.conf && chmod 0644 /etc/nginx/sites-available/nginx-tribelink-webserver.conf'
+
+  - name: Enable the 'nginx-tribelink-webserver.conf' file
+    become: yes
+    ansible.builtin.command:
+      cmd: 'ln -sf /etc/nginx/sites-available/nginx-tribelink-webserver.conf /etc/nginx/sites-enabled/nginx-tribelink-webserver.conf'
+
+  - name: Reload nginx
+    become: yes
+    ansible.builtin.shell:
+      cmd: 'nginx -t && systemctl reload nginx || exit 1'

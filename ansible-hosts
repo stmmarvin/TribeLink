@@ -1,0 +1,2 @@
+[ubuntu]
+ansible-runner@145.89.192.41	ansible_python_interpreter=auto_silent  ansible_ssh_pass='{{ hu_s1p3_tribelink_become_pass }}'	ansible_become_pass='{{ hu_s1p3_tribelink_become_pass }}'

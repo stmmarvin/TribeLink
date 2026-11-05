@@ -1,0 +1,633 @@
+@import "tailwindcss";
+
+@import "tw-animate-css";
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --font-sans:
+        "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.87 0 0);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.87 0 0);
+}
+
+.dark {
+    --color-app: #0b1426;
+    --color-surface: #13203a;
+    --color-ink: #e8eefa;
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.145 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.145 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.985 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.723);
+    --destructive-foreground: oklch(0.637 0.237 25.331);
+    --border: oklch(0.269 0 0);
+    --input: oklch(0.269 0 0);
+    --ring: oklch(0.439 0 0);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.985 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(0.269 0 0);
+    --sidebar-ring: oklch(0.439 0 0);
+    --color-subtle: #1a2a48;
+    --color-line: #24365a;
+    --color-line-soft: #2c4170;
+    --color-line-dashed: #34507f;
+    --color-media-tint: #1a2a48;
+    --color-disabled: #2a3a58;
+    --color-ink-secondary: #b4c2dc;
+    --color-ink-muted: #8193b3;
+    --color-placeholder: #93a3c0;
+    --color-brand-aa: #7aa2ff;
+    --color-sunshine-dark: #ffc95c;
+    --color-brand-teal-dark: #2dd4bf;
+    --color-teal-dark: #2dd4bf;
+    --color-danger-text: #ff8a8a;
+    --color-danger-surface: #3a1a1f;
+    --color-room-from: #13203a;
+    --color-room-to: #10283a;
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/*
+ * TribeLink design system — tokens taken 1:1 from the Figma file
+ * (pages "Color Palette" and "Typography"). Components only use these
+ * tokens, never raw hex values.
+ */
+@theme {
+    /* Fonts */
+    --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-pixel: "Silkscreen", ui-monospace, monospace;
+
+    /* Brand */
+    --color-brand: #2f6bff; /* Ocean Blue */
+    --color-brand-aa: #2d67f5; /* Ocean Blue – text on tint (AA) */
+    --color-brand-cyan: #22d3ee;
+    --color-brand-teal: #14b8a6;
+    --color-brand-teal-dark: #0f766e; /* Teal Dark (AA) */
+    --color-sunshine: #ffb627;
+    --color-sunshine-dark: #8a5a00; /* Sunshine Dark (AA) */
+    --color-coral: #ff6b6b;
+    --color-cta-from: #2e68f7;
+    --color-cta-to: #19809c;
+
+    /* Backgrounds & surfaces */
+    --color-app: #f5f8fc;
+    --color-surface: #ffffff;
+    --color-subtle: #eef3fa;
+    --color-line: #dde6f2;
+    --color-line-soft: #ccddf5;
+    --color-line-dashed: #c2d2e8;
+    --color-media-tint: #eaf2ff;
+    --color-disabled: #d5e0ee;
+    --color-overlay: #0f1e3a;
+
+    /* Text */
+    --color-ink: #0f1e3a;
+    --color-ink-secondary: #4b5b78;
+    --color-ink-muted: #8a9ab5;
+    --color-placeholder: #5d6c88;
+
+    /* Feedback */
+    --color-success: #22c55e;
+    --color-danger: #ef4444;
+    --color-danger-text: #c81e1e;
+    --color-danger-surface: #fef2f2;
+
+    /* Landing illustration placeholder background */
+    --color-room-from: #eff5ff;
+    --color-room-to: #ebfbfe;
+
+    /* Radii */
+    --radius-logo-sm: 9px;
+    --radius-logo: 10px;
+    --radius-logo-lg: 18px;
+    --radius-tab: 11px;
+    --radius-field: 12px;
+    --radius-btn: 14px;
+    --radius-card: 16px;
+    --radius-panel: 20px;
+
+    /* Shadows */
+    --shadow-card: 0 4px 10px rgb(47 107 255 / 0.08);
+    --shadow-card-hover: 0 8px 14px rgb(47 107 255 / 0.16);
+    --shadow-cta: 0 6px 8px rgb(47 107 255 / 0.28);
+    --shadow-cta-hover: 0 10px 12px rgb(47 107 255 / 0.4);
+    --shadow-pressed: 0 2px 4px rgb(15 30 58 / 0.08);
+    --shadow-modal: 0 24px 24px rgb(15 30 58 / 0.18);
+    --shadow-nav-up: 0 -4px 10px rgb(47 107 255 / 0.08);
+    --shadow-illustration: 0 4px 20px rgb(47 107 255 / 0.08);
+    --shadow-logo: 0 6px 16px rgb(47 107 255 / 0.28);
+}
+
+/* Gradients (Figma: "Brand Gradient" and "CTA Gradient (AA)") */
+@utility bg-brand-gradient {
+    background-image: linear-gradient(
+        135deg,
+        var(--color-brand) 14.644%,
+        var(--color-brand-cyan) 85.356%
+    );
+}
+
+@utility bg-cta-gradient {
+    background-image: linear-gradient(
+        158deg,
+        var(--color-cta-from) 14.644%,
+        var(--color-cta-to) 85.356%
+    );
+}
+
+@utility text-brand-gradient {
+    background-image: linear-gradient(
+        170deg,
+        var(--color-brand) 14.644%,
+        var(--color-brand-cyan) 85.356%
+    );
+    background-clip: text;
+    color: transparent;
+}
+
+/* Type scale (Figma: "Typography → Type Scale") */
+@utility type-h1 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+@utility type-h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.24px;
+}
+
+@utility type-h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.2px;
+}
+
+@utility type-button {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+@utility type-label {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+@utility type-field-label {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+}
+
+@utility type-body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+@utility type-small {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+@utility type-caption {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+@utility type-logo {
+    font-family: var(--font-pixel);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* Visible keyboard focus in the TribeLink style */
+@utility focus-ring {
+    &:focus-visible {
+        outline: 2px solid var(--color-brand);
+        outline-offset: 2px;
+    }
+}
+
+/*
+ * Hotel (Lobby) — extra tokens die de hotel-UI gebruikt, met de waarden uit de
+ * hotel-prompt. Bestaande tokens hierboven blijven ongewijzigd; tokens die al
+ * bestonden met dezelfde waarde (surface, subtle, line, ink, success,
+ * placeholder, font-pixel, rounded-card, shadow-card) staan hier niet nog eens.
+ */
+@theme {
+    --color-blue: #2f6bff;
+    --color-blue-aa: #2d67f5;
+    --color-cyan: #22d3ee;
+    --color-teal: #14b8a6;
+    --color-teal-dark: #0f766e;
+
+    --font-jakarta: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-inter: "Inter", system-ui, sans-serif;
+
+    --text-label: 14px;
+    --text-label--line-height: 1.4;
+    --text-label--font-weight: 600;
+    --text-small: 14px;
+    --text-small--line-height: 1.5;
+    --text-caption: 12px;
+    --text-caption--line-height: 1.5;
+
+    --radius-tile: 10px;
+    --radius-input: 12px;
+    --radius-pill: 999px;
+}
+
+/* bg-brand is hier al een effen kleur; het brand-verloop is bg-brand-gradient (zie boven). */
+@utility bg-cta {
+    background-image: linear-gradient(158deg, #2e68f7 14.644%, #19809c 85.356%);
+}
+
+@utility bg-cta-hover {
+    background-image: linear-gradient(158deg, #2f6bff 14.644%, #22d3ee 85.356%);
+}
+
+@utility bg-media-gradient {
+    background-image:
+        linear-gradient(
+            135deg,
+            rgba(47, 107, 255, 0.22) 14.644%,
+            rgba(34, 211, 238, 0.22) 85.356%
+        ),
+        linear-gradient(#eaf2ff, #eaf2ff);
+}
+
+/*
+ * Spellen in het hotel (schaken, arcade) — countdown (3 → 2 → 1 → 0) en de pixel-dissolve
+ * tussen hotel en spel. Met prefers-reduced-motion blijft alleen een
+ * korte fade over.
+ */
+@keyframes game-count {
+    0% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+    18% {
+        transform: scale(0.92);
+        opacity: 1;
+    }
+    30% {
+        transform: scale(1.06);
+    }
+    42%,
+    80% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+}
+
+@keyframes game-count-ring {
+    0% {
+        transform: scale(0.4);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+/* Eén blokje van de pixel-dissolve: springt in één stap aan of uit */
+@keyframes pixel-on {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pixel-off {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in-soft {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@utility animate-game-count {
+    animation: game-count 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+@utility animate-game-count-ring {
+    animation: game-count-ring 1s ease-out both;
+}
+
+/* Arcade: "Nieuwe highscore!" stempel en de "Perfect"-melding in Stack */
+@keyframes highscore {
+    0% {
+        transform: scale(2.2) rotate(-8deg);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(0.94) rotate(-3deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotate(-3deg);
+        opacity: 1;
+    }
+}
+
+@keyframes perfect-pop {
+    0% {
+        transform: translateY(8px) scale(0.7);
+        opacity: 0;
+    }
+    25% {
+        transform: translateY(0) scale(1.1);
+        opacity: 1;
+    }
+    70% {
+        transform: translateY(-6px) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-18px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Golf die over het beeld spoelt (WaveTransition): erin van links, eruit naar rechts */
+@keyframes wave-in {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes wave-out {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@utility animate-highscore {
+    animation: highscore 600ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+@utility animate-perfect-pop {
+    animation: perfect-pop 800ms ease-out both;
+}
+
+/*
+ * Tribekaarten: de tafel zoomt in, de kaarten worden geschud en vliegen over tafel
+ * (delen, pakken, leggen). Van- en naar-posities komen uit CSS-variabelen.
+ */
+@keyframes card-fly {
+    from {
+        left: var(--from-x);
+        top: var(--from-y);
+        transform: translate(-50%, -50%) rotate(var(--from-r, 0deg))
+            scale(var(--from-s, 1));
+    }
+    to {
+        left: var(--to-x);
+        top: var(--to-y);
+        transform: translate(-50%, -50%) rotate(var(--to-r, 0deg))
+            scale(var(--to-s, 1));
+    }
+}
+
+/* De gelegde kaart komt vanaf de speler aanvliegen en landt op de aflegstapel */
+@keyframes card-land {
+    from {
+        transform: translate(var(--from-x), var(--from-y)) rotate(-25deg)
+            scale(0.7);
+    }
+    to {
+        transform: translate(0, 0) rotate(0) scale(1);
+    }
+}
+
+@keyframes card-riffle {
+    0%,
+    100% {
+        transform: translateX(0) rotate(0);
+    }
+    50% {
+        transform: translateX(var(--riffle, 70%)) rotate(var(--riffle-r, 8deg));
+    }
+}
+
+@keyframes table-zoom {
+    from {
+        transform: scale(0.35);
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes card-shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    20%,
+    60% {
+        transform: translateX(-4px);
+    }
+    40%,
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+@keyframes turn-glow {
+    0%,
+    100% {
+        box-shadow: 0 0 0 3px var(--color-sunshine);
+    }
+    50% {
+        box-shadow: 0 0 0 7px rgb(255 182 39 / 0.25);
+    }
+}
+
+@utility animate-table-zoom {
+    animation: table-zoom 700ms cubic-bezier(0.2, 0.9, 0.3, 1.1) both;
+}
+
+@utility animate-card-shake {
+    animation: card-shake 450ms steps(6, end) both;
+}
+
+@utility animate-turn-glow {
+    animation: turn-glow 1.2s steps(4, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-highscore,
+    .animate-perfect-pop,
+    .animate-game-count,
+    .animate-game-count-ring,
+    .animate-table-zoom,
+    .animate-card-shake {
+        animation: fade-in-soft 0.2s ease-out both;
+    }
+
+    .animate-turn-glow {
+        animation: none;
+    }
+}
